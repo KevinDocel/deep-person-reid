@@ -1,11 +1,21 @@
 from __future__ import print_function, absolute_import
-import torch
 
-AVAI_SCH = ['single_step', 'multi_step', 'cosine']
+import torch
+from .warmupmultistep_lr_scheduler import WarmupMultiStepLR
+from .exponentialdecay_lr_scheduler import ExponentialDecayLR
+
+AVAI_SCH = ['single_step', 'multi_step', 'cosine', 'warmup_multi_step', 'exponential_decay']
 
 
 def build_lr_scheduler(
-    optimizer, lr_scheduler='single_step', stepsize=1, gamma=0.1, max_epoch=1
+        optimizer,
+        lr_scheduler='single_step',
+        stepsize=1,
+        gamma=0.1,
+        max_epoch=1,
+        warmup_factor=0.01,
+        warmup_epoch=10,
+        warmup_method='linear'
 ):
     """A function wrapper for building a learning rate scheduler.
 
@@ -63,6 +73,31 @@ def build_lr_scheduler(
     elif lr_scheduler == 'cosine':
         scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
             optimizer, float(max_epoch)
+        )
+    elif lr_scheduler == 'warmup_multi_step':
+        scheduler = WarmupMultiStepLR(
+            optimizer=optimizer,
+            milestones=stepsize,
+            gamma=gamma,
+            warmup_factor=warmup_factor,
+            warmup_iters=warmup_epoch,
+            warmup_method=warmup_method,
+        )
+    elif lr_scheduler == 'exponential_decay':
+        if isinstance(stepsize, list):
+            stepsize = stepsize[-1]
+
+        if not isinstance(stepsize, int):
+            raise TypeError(
+                'For exponential_decay lr_scheduler, stepsize must '
+                'be an integer, but got {}'.format(type(stepsize))
+            )
+
+        scheduler = ExponentialDecayLR(
+            optimizer=optimizer,
+            max_epoch=max_epoch,
+            start_decay_at_epoch=stepsize,
+            gamma=gamma
         )
 
     return scheduler
