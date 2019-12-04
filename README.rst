@@ -262,7 +262,7 @@ ReID-specific models
 - `OSNet <https://arxiv.org/abs/1905.00953>`_
 - `OSNet-AIN <https://arxiv.org/abs/1910.06827>`_
 - `ResNet-BNNeck <https://github.com/michuanhaohao/reid-strong-baseline>`_
-
+- `MGN <https://arxiv.org/abs/1804.01438v1>`_
 Useful links
 -------------
 - `OSNet-IBN1-Lite (test-only code with lite docker container) <https://github.com/RodMech/OSNet-IBN1-Lite>`_
