@@ -261,7 +261,7 @@ ReID-specific models
 - `MLFN <https://arxiv.org/abs/1803.09132>`_
 - `OSNet <https://arxiv.org/abs/1905.00953>`_
 - `OSNet-AIN <https://arxiv.org/abs/1910.06827>`_
-
+- `ResNet-BNNeck <https://github.com/michuanhaohao/reid-strong-baseline>`_
 
 Useful links
 -------------
