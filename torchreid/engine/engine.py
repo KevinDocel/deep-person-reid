@@ -303,10 +303,17 @@ class Engine(object):
         )
 
         print('** Results **')
-        print('mAP: {:.1%}'.format(mAP))
+        tag_scalar_dict = dict()
+        print('mAP: {:.2%}'.format(mAP))
+        tag_scalar_dict['mAP'] = mAP
+
         print('CMC curve')
         for r in ranks:
             print('Rank-{:<3}: {:.1%}'.format(r, cmc[r - 1]))
+        tag_scalar_dict['Rank-1'] = cmc[0]
+
+        if self.writer:
+            self.writer.add_scalars('Test', tag_scalar_dict, epoch)
 
         if visrank:
             visualize_ranked_results(
